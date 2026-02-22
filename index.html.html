@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGMI Elite Ranking</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700&display=swap');
+
+        :root {
+            --glow-color: #00ffff;
+            --gold-color: #ffd700;
+            --background-color: #0d0d1a;
+            --container-bg: rgba(20, 20, 40, 0.7);
+            --border-color: rgba(0, 255, 255, 0.5);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            background-color: var(--background-color);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(0, 255, 255, 0.1), transparent 30%),
+                radial-gradient(circle at 85% 50%, rgba(255, 0, 255, 0.1), transparent 30%);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(0deg, transparent 50%, rgba(0, 255, 255, 0.05) 50%),
+                linear-gradient(90deg, transparent 50%, rgba(255, 0, 255, 0.05) 50%);
+            background-size: 50px 50px;
+            animation: background-pan 40s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes background-pan {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 1000px 1000px;
+            }
+        }
+
+        .heading {
+            font-family: 'Russo One', sans-serif;
+            font-size: 4rem;
+            margin: 40px 0;
+            text-transform: uppercase;
+            text-align: center;
+            animation: glowing-heading 3s infinite alternate;
+            text-shadow:
+                0 0 10px var(--glow-color),
+                0 0 20px var(--glow-color),
+                0 0 30px var(--glow-color),
+                0 0 40px #ff00ff,
+                0 0 70px #ff00ff,
+                0 0 80px #ff00ff,
+                0 0 100px #ff00ff;
+        }
+
+        @keyframes glowing-heading {
+            0% {
+                text-shadow:
+                    0 0 10px var(--glow-color),
+                    0 0 20px var(--glow-color),
+                    0 0 30px #ff00ff,
+                    0 0 40px #ff00ff;
+            }
+            100% {
+                text-shadow:
+                    0 0 5px var(--glow-color),
+                    0 0 15px var(--glow-color),
+                    0 0 25px #ff00ff,
+                    0 0 35px #ff00ff;
+            }
+        }
+
+        .leaderboard-container {
+            width: 90%;
+            max-width: 600px;
+            background: var(--container-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 30px var(--border-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            animation: container-glow 4s infinite alternate;
+        }
+
+        .leaderboard-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent,
+                rgba(0, 255, 255, 0.5),
+                transparent 30%
+            );
+            animation: rotate 6s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes container-glow {
+            from {
+                box-shadow: 0 0 20px var(--border-color);
+                border-color: var(--border-color);
+            }
+            to {
+                box-shadow: 0 0 40px #ff00ff;
+                border-color: rgba(255, 0, 255, 0.5);
+            }
+        }
+
+        .player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-player {
+            background: linear-gradient(45deg, #ffd700, #ffec80, #ffd700);
+            color: #1a1a1a;
+            border: 2px solid #fff;
+            animation: shine 2s infinite linear, top-player-glow 2s infinite alternate;
+            background-size: 200% 100%;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        @keyframes top-player-glow {
+            from {
+                box-shadow: 0 0 15px #ffd700, 0 0 25px #ffec80;
+            }
+            to {
+                box-shadow: 0 0 25px #ffd700, 0 0 40px #ffec80;
+            }
+        }
+
+        .ranked-player {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .ranked-player:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--glow-color);
+            border-color: var(--glow-color);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 30px 0;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold-color);
+            text-shadow: 0 0 5px var(--gold-color), 0 0 10px #ff0;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--glow-color);
+            border-radius: 15px;
+            padding: 40px 60px;
+            font-size: 4rem;
+            font-family: 'Russo One', sans-serif;
+            color: #ff4d4d;
+            text-shadow: 0 0 10px #ff0000;
+            box-shadow: 0 0 30px var(--glow-color);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            z-index: 1000;
+        }
+
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup.hide {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="heading">BGMI Elite Ranking</h1>
+
+    <div class="leaderboard-container">
+        <div class="player top-player">
+            👑 Paras - PRO PLAYER 👑
+        </div>
+        <div class="player ranked-player">
+            🥇 Sahil (Khassi Player)
+        </div>
+        <div class="player ranked-player">
+            🥈 Goku (Khassi Player)
+        </div>
+        <div class="player ranked-player">
+            🥉 Obito (Khassi Player)
+        </div>
+    </div>
+
+    <div class="popup" id="popup">
+        NOOB 💀
+    </div>
+
+    <footer>
+        Made by Paras Pro
+    </footer>
+
+    <script>
+        const clickablePlayers = document.querySelectorAll('.ranked-player');
+        const popup = document.getElementById('popup');
+
+        clickablePlayers.forEach(player => {
+            player.addEventListener('click', () => {
+                popup.classList.add('show');
+                popup.classList.remove('hide');
+
+                setTimeout(() => {
+                    popup.classList.add('hide');
+                    popup.classList.remove('show');
+                }, 1500);
+            });
+        });
+    </script>
+
+</body>
+</html>
